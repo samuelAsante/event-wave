@@ -201,12 +201,12 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 ## 🔗 Deployment
 
-- Frontend: [Live Demo](https://campus-events.vercel.app)
-- Backend API: [API Endpoint](https://campus-events-api.render.com)
+- Frontend: [Live Demo](https://event-wave-gamma.vercel.app)
+- Backend API: [API Endpoint](https://event-wave.onrender.com)
 
 ## 👥 Author
 
-- Samuel Asante
+- Samuel Owusu Asante
 
 ## 📄 License
 

@@ -44,7 +44,7 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     const loadingToast = toast.loading("Creating your account...");
     try {
-      await api.post("/auth/register", data);
+      await api.post("/auth/signup", data);
       toast.dismiss(loadingToast);
       toast.success("Account created successfully!");
       navigate("/login");
