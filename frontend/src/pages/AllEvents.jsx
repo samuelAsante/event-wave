@@ -58,12 +58,12 @@ const AllEvents = () => {
         eventDescription.includes(searchTerm);
 
       const eventDate = new Date(event.startDateTime);
-      const matchesDate = 
-        !selectedDate || 
+      const matchesDate =
+        !selectedDate ||
         eventDate.toDateString() === selectedDate.toDateString();
 
-      const matchesPreferences = 
-        selectedPreferences.length === 0 || 
+      const matchesPreferences =
+        selectedPreferences.length === 0 ||
         selectedPreferences.includes(event.category);
 
       return matchesSearch && matchesDate && matchesPreferences;
@@ -179,23 +179,25 @@ const AllEvents = () => {
               <motion.div layout className='max-w-7xl mx-auto py-8'>
                 <AnimatePresence mode='wait'>
                   {loading ? (
-                    <motion.div
-                      key='loader'
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className='flex justify-center items-center h-64'
-                    >
+                    <>
                       <motion.div
-                        className='h-12 w-12 border-t-2 border-b-2 border-primary rounded-full'
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                      />
-                    </motion.div>
+                        key='loader'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className='flex justify-center items-center h-64'
+                      >
+                        <motion.div
+                          className='h-12 w-12 border-t-2 border-b-2 border-primary rounded-full'
+                          animate={{ rotate: 360 }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
+                        />
+                      </motion.div>
+                    </>
                   ) : filteredEvents.length === 0 ? (
                     <motion.div
                       key='no-events'

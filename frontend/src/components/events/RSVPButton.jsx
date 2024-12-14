@@ -33,7 +33,7 @@ const RSVPButton = ({ event, onRSVP }) => {
 
   const getButtonClassName = () => {
     if (isUserRSVPed) {
-      return "bg-Eventhive text-white px-4 py-2 rounded-lg";
+      return "bg-Yelo text-white px-4 py-2 rounded-lg";
     }
     if (isEventFull) {
       return "bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed";

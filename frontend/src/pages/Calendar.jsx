@@ -1,100 +1,90 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { FiFilter, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import React from "react";
+import { Calendar } from "react-calendar";
+import { motion } from "framer-motion";
 
 const EventCalendar = ({
-  onDateSelect,
-  onPreferencesChange,
   events,
+  onDateSelect,
+  selectedDate,
+  onPreferencesChange,
   preferences,
 }) => {
-  const [selectedPreferences, setSelectedPreferences] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  // Get dates with events
+  const eventDates = events.map((event) => new Date(event.date).toDateString());
 
-  // Function to check if date has events
-  const hasEvents = (date) => {
-    return events.some((event) => {
-      const eventDate = new Date(event.startDateTime);
-      return eventDate.toDateString() === date.toDateString();
-    });
-  };
-
-  // Updated tile content with new styling
+  // Custom tile content
   const tileContent = ({ date, view }) => {
-    if (view === "month" && hasEvents(date)) {
+    const hasEvent = eventDates.includes(date.toDateString());
+
+    if (hasEvent) {
       return (
-        <div className='h-1.5 w-1.5 bg-black rounded-full mx-auto mt-1'></div>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className='w-2 h-2 bg-primary rounded-full mx-auto mt-1'
+        />
       );
     }
   };
 
-  const handlePreferenceToggle = (pref) => {
-    const newPreferences = selectedPreferences.includes(pref)
-      ? selectedPreferences.filter((p) => p !== pref)
-      : [...selectedPreferences, pref];
+  // Custom tile className
+  const tileClassName = ({ date, view }) => {
+    const hasEvent = eventDates.includes(date.toDateString());
+    const isSelected = selectedDate?.toDateString() === date.toDateString();
 
-    setSelectedPreferences(newPreferences);
-    onPreferencesChange(newPreferences); // Pass the updated preferences to parent
-  };
-
-  const handleDateSelect = (date) => {
-    const newDate = selectedDate && selectedDate.toDateString() === date.toDateString() ? null : date;
-    setSelectedDate(newDate);
-    onDateSelect(newDate);
+    return `
+      ${hasEvent ? "has-event" : ""}
+      ${isSelected ? "selected-date" : ""}
+      hover:bg-gray-700 rounded-lg transition-colors
+    `;
   };
 
   return (
-    <div
-      className='bg-black rounded-xl shadow-lg p-6 '
-      style={{ width: "350px" }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className='calendar-container'
     >
-      <div className='flex justify-between items-center mb-6'>
-        <h2 className='text-xl font-semibold text-white'>Event Calendar</h2>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className='flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg text-white'
-        >
-          <FiFilter className='text-white' />
-          <span>Filters</span>
-        </button>
-      </div>
+      <Calendar
+        onChange={onDateSelect}
+        value={selectedDate}
+        tileContent={tileContent}
+        tileClassName={tileClassName}
+        className='bg-gray-800 rounded-xl p-4 text-gray-100'
+        nextLabel='→'
+        prevLabel='←'
+        next2Label={null}
+        prev2Label={null}
+      />
 
-      {showFilters && (
-        <div className='mb-6 rounded-lg'>
-          <h3 className='text-sm font-medium text-white mb-3'>
-            Tags
-          </h3>
-          <div className='flex flex-wrap gap-2'>
-            {preferences.map((pref) => (
+      {/* Event Types Filter */}
+      <div className='mt-4'>
+        <h4 className='text-sm font-medium mb-2'>Event Types</h4>
+        <div className='flex flex-wrap gap-2'>
+          {Array.from(new Set(events.map((event) => event.type))).map(
+            (type) => (
               <button
-                key={pref}
-                onClick={() => handlePreferenceToggle(pref)}
-                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
-                  selectedPreferences.includes(pref)
-                    ? "bg-white text-black border "
-                    : "bg-black text-white border border-white "
+                key={type}
+                onClick={() => {
+                  if (preferences.includes(type)) {
+                    onPreferencesChange(preferences.filter((p) => p !== type));
+                  } else {
+                    onPreferencesChange([...preferences, type]);
+                  }
+                }}
+                className={`px-3 py-1 rounded-full text-sm ${
+                  preferences.includes(type)
+                    ? "bg-primary text-white"
+                    : "bg-gray-700 text-gray-300"
                 }`}
               >
-                {pref}
+                {type}
               </button>
-            ))}
-          </div>
+            )
+          )}
         </div>
-      )}
-
-      <div className='calendar-container bg-transparent'>
-        <Calendar
-          onChange={handleDateSelect}
-          value={selectedDate}
-          tileContent={tileContent}
-          prevLabel={<FiChevronLeft className='text-white hover:text-black' />}
-          nextLabel={<FiChevronRight className='text-white hover:text-black' />}
-          className='rounded-lg'
-        />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

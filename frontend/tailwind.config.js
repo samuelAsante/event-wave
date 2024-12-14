@@ -19,11 +19,12 @@ module.exports = {
         },
       },
       colors: {
-        Eventhive: "#FFC107",
+        Yelo: "#FFC107",
         Eventgray: "#37474F",
         Eventblue: "#00ACC1",
         Eventwhite: "#FAFAFA",
         Eventchar: "#212121",
+        Purp: "#6d28d9",
       },
     },
   },

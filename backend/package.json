@@ -1,5 +1,5 @@
 {
-  "name": "event-management",
+  "name": "event-wave",
   "version": "1.0.0",
   "description": "Campus Event Management Backend",
   "main": "server.js",
