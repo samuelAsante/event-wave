@@ -7,11 +7,11 @@ A modern web application for managing campus events, allowing students and staff
 ```json
 {
   "User Account": {
-    "email": "student@test.com",
-    "password": "Test1234"
+    "email": "user@user.com",
+    "password": "User1234"
   },
   "Admin Account": {
-    "email": "test@test.com",
+    "email": "admin@admin.com",
     "password": "Admin1234"
   }
 }
@@ -24,13 +24,13 @@ A modern web application for managing campus events, allowing students and staff
 - User registration and authentication
 - Personalized event preferences
 - User profiles with saved events
-- Role-based access (Admin/Student/Staff)
+- Role-based access (Admin/User)
 
 ### Event Management
 
 - Comprehensive event listings
 - Real-time seat availability tracking
-- RSVP functionality
+- Reservation functionality
 - Event filtering and search
 - Calendar view with date-based navigation
 

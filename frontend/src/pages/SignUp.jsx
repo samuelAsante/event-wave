@@ -14,14 +14,25 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      fullName: "",
       email: "",
       password: "",
-      firstName: "",
-      lastName: "",
     },
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const generateUsername = (fullName) => {
+    // Remove special characters and spaces, convert to lowercase
+    const baseName = fullName
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .trim();
+
+    // Add a random number to make it unique
+    const randomNum = Math.floor(Math.random() * 1000);
+    return `${baseName}${randomNum}`;
+  };
 
   const onSubmit = async (data) => {
     if (isSubmitting) return;
@@ -31,13 +42,12 @@ const SignUp = () => {
 
     try {
       const formattedData = {
-        username: `${data.firstName}${data.lastName}`.toLowerCase(),
+        username: generateUsername(data.fullName),
         email: data.email,
         password: data.password,
         role: "user",
         profile: {
           fullName: data.fullName,
-          // lastName: data.lastName,
         },
       };
 
@@ -47,6 +57,11 @@ const SignUp = () => {
       navigate("/login");
     } catch (error) {
       toast.dismiss(loadingToast);
+      if (error.response?.data?.message?.includes("username")) {
+        // If username exists, try again with a different random number
+        onSubmit(data);
+        return;
+      }
       handleError(error);
     } finally {
       setIsSubmitting(false);
@@ -59,7 +74,7 @@ const SignUp = () => {
     } else if (!navigator.onLine) {
       toast.error("No internet connection");
     } else {
-      toast.error(error.message || "Failed to create account");
+      toast.error(error.response?.data?.message || "Failed to create account");
     }
   };
 
@@ -86,26 +101,6 @@ const SignUp = () => {
                 </p>
               )}
             </div>
-
-            {/* <div>
-              <input
-                type="text"
-                placeholder="Username"
-                {...register("username", {
-                  required: "Username is required",
-                  minLength: {
-                    value: 3,
-                    message: "Username must be at least 3 characters",
-                  },
-                })}
-                className="w-full bg-zinc-800 text-white p-4 py-2 rounded-lg border border-zinc-700 focus:border-zinc-600 focus:ring-2 focus:ring-zinc-600 outline-none transition-all"
-              />
-              {errors.username && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.username.message}
-                </p>
-              )}
-            </div> */}
 
             <div>
               <input
@@ -159,12 +154,9 @@ const SignUp = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               type="submit"
-              disabled={isSubmitting}
-              className={`bg-blue-600 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-700 transition-colors ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-700 transition-colors"
             >
-              {isSubmitting ? "Creating Account..." : "Sign Up"}
+              Sign Up
             </motion.button>
           </form>
 
