@@ -54,41 +54,39 @@ const SignUp = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  {...register("fullName", {
-                    required: "Full name is required",
-                  })}
-                  className="w-full bg-zinc-800 text-white p-4 py-2 rounded-lg border border-zinc-700"
-                />
-                {errors.fullName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.fullName.message}
-                  </p>
-                )}
-              </div>
+              <input
+                type="text"
+                placeholder="Full Name"
+                {...register("fullName", {
+                  required: "Full name is required",
+                })}
+                className="w-full bg-zinc-800 text-white p-4 py-2 rounded-lg border border-zinc-700"
+              />
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.fullName.message}
+                </p>
+              )}
+            </div>
 
-              <div>
-                <input
-                  type="text"
-                  placeholder="Username"
-                  {...register("username", {
-                    required: "Username is required",
-                    minLength: {
-                      value: 3,
-                      message: "Username must be at least 3 characters",
-                    },
-                  })}
-                  className="w-full bg-zinc-800 text-white p-4 py-2 rounded-lg border border-zinc-700 focus:border-zinc-600 focus:ring-2 focus:ring-zinc-600 outline-none transition-all"
-                />
-                {errors.username && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {errors.username.message}
-                  </p>
-                )}
-              </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Username"
+                {...register("username", {
+                  required: "Username is required",
+                  minLength: {
+                    value: 3,
+                    message: "Username must be at least 3 characters",
+                  },
+                })}
+                className="w-full bg-zinc-800 text-white p-4 py-2 rounded-lg border border-zinc-700 focus:border-zinc-600 focus:ring-2 focus:ring-zinc-600 outline-none transition-all"
+              />
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.username.message}
+                </p>
+              )}
             </div>
 
             <div>
