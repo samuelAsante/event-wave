@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -21,8 +21,14 @@ const SignUp = () => {
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = async (data) => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const loadingToast = toast.loading("Creating your account...");
+
     try {
       const formattedData = {
         username: `${data.firstName}${data.lastName}`.toLowerCase(),
@@ -30,17 +36,29 @@ const SignUp = () => {
         password: data.password,
         role: "user",
         profile: {
-          firstName: data.firstName,
-          lastName: data.lastName,
+          fullName: data.fullName,
+          // lastName: data.lastName,
         },
       };
 
-      await api.post("/auth/register", formattedData);
+      const response = await api.post("/auth/register", formattedData);
       toast.dismiss(loadingToast);
       toast.success("Account created successfully!");
       navigate("/login");
     } catch (error) {
       toast.dismiss(loadingToast);
+      handleError(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleError = (error) => {
+    if (error.code === "ECONNABORTED") {
+      toast.error("Connection timed out - please try again");
+    } else if (!navigator.onLine) {
+      toast.error("No internet connection");
+    } else {
       toast.error(error.message || "Failed to create account");
     }
   };
@@ -69,7 +87,7 @@ const SignUp = () => {
               )}
             </div>
 
-            <div>
+            {/* <div>
               <input
                 type="text"
                 placeholder="Username"
@@ -87,7 +105,7 @@ const SignUp = () => {
                   {errors.username.message}
                 </p>
               )}
-            </div>
+            </div> */}
 
             <div>
               <input
@@ -141,9 +159,12 @@ const SignUp = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-700 transition-colors"
+              disabled={isSubmitting}
+              className={`bg-blue-600 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-700 transition-colors ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Sign Up
+              {isSubmitting ? "Creating Account..." : "Sign Up"}
             </motion.button>
           </form>
 

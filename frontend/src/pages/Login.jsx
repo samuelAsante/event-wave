@@ -29,8 +29,8 @@ const Login = () => {
     const loadingToast = toast.loading("Signing in...");
     try {
       const response = await api.post("/auth/login", values);
-      toast.dismiss(loadingToast);
-      toast.success("Successfully logged in!");
+      const token = response.data.data.accessToken;
+      localStorage.setItem("token", token);
       login(response.data);
     } catch (error) {
       toast.dismiss(loadingToast);
