@@ -59,10 +59,12 @@ const MyEvents = () => {
 
   return (
     <>
-      <Navbar hideMyEvents={true} />
-      <div className="min-h-screen bg-zinc-600 pt-8">
+      <div className="flex justify-center w-full h-24 max-md:h-[85px] bg-transparent backdrop-blur-md z-50 fixed">
+        <Navbar hideMyEvents={true} />
+      </div>
+      <div className="min-h-screen pt-8 relative top-24">
         <div className="max-w-6xl mx-auto px-4">
-          <div>
+          <div className="container">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
               <h1 className="text-2xl font-bold text-gray-100">
                 {selectedDate

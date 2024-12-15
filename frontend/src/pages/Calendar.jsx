@@ -21,7 +21,7 @@ const EventCalendar = ({
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className='w-2 h-2 bg-primary rounded-full mx-auto mt-1'
+          className="w-2 h-2 bg-primary rounded-full mx-auto mt-1"
         />
       );
     }
@@ -43,24 +43,24 @@ const EventCalendar = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className='calendar-container'
+      className="calendar-container"
     >
       <Calendar
         onChange={onDateSelect}
         value={selectedDate}
         tileContent={tileContent}
         tileClassName={tileClassName}
-        className='bg-gray-800 rounded-xl p-4 text-gray-100'
-        nextLabel='→'
-        prevLabel='←'
+        className="bg-gray-800 rounded-xl p-4 text-gray-100"
+        nextLabel="→"
+        prevLabel="←"
         next2Label={null}
         prev2Label={null}
       />
 
       {/* Event Types Filter */}
-      <div className='mt-4'>
-        <h4 className='text-sm font-medium mb-2'>Event Types</h4>
-        <div className='flex flex-wrap gap-2'>
+      <div className="mt-4">
+        {/* <h4 className='text-sm font-medium mb-2'>Event Types</h4> */}
+        <div className="flex flex-wrap gap-2">
           {Array.from(new Set(events.map((event) => event.type))).map(
             (type) => (
               <button
